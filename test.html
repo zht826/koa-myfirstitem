@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script src="http://libs.baidu.com/jquery/1.11.1/jquery.min.js"></script>
+    <style>
+        ul,li{
+           list-style: none; 
+        }
+        span{
+            display: block;
+        }
+        .box{
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="box addBox">
+        <span>姓名</span>
+        <input type="text" class="name"><br>
+        <span>QQ</span>
+        <input type="text" class="qq"><br>
+        <span>E-mail</span>
+        <input type="text" class="email"><br>
+        <span>留言</span><br>
+        <!--<input type="text" class="msg"><br>-->
+        <textarea class="msg" name="" id="" cols="30" rows="10"></textarea><br>
+        <input type="button" class="put" value="提交留言">
+        <input type="button" class="query" value="查询留言">
+    </div>
+    <div class="box listBox">
+
+        <ul>
+        </ul>
+    </div>
+<script>
+    var data = {};
+    queryMessage('%');
+    $('.put').on('click',putMessage);
+    function putMessage(){
+        data = {
+            name:$('.name').val(),
+            qq:$('.qq').val(),
+            email:$('.email').val(),
+            msg:$('.msg').val()
+        };
+        console.log(data);
+        $.ajax({
+            type:'GET',
+            url:'http://localhost:3456/MessageBoard/addData',
+            data:data,
+            success:function(msg){
+                alert(msg.respDesc);
+                queryMessage('%');
+            }
+        });
+    }
+    $('.query').on('click',function(){
+        queryMessage($('.name').val());
+    });
+    function queryMessage(str){
+        data = {
+            name:str
+        };
+        $.ajax({
+            type:'GET',
+            url:'http://localhost:3456/MessageBoard/queryData',
+            data:data,
+            success:function(msg){
+                console.log(msg);
+                if(msg.respCode=='0000'){
+                    var t = '';
+                    for(var i =0;i<msg.data.length;i++){
+                        t += '<li>姓名：'+msg.data[i].name+'<br>'+'留言：'+msg.data[i].msg+'</li>'
+                    }
+                    $('.listBox').html(t);
+                }else{
+                    alert(msg.respDesc);
+                }
+            }
+        });
+    }
+</script>
+</body>
+</html>
