@@ -22,7 +22,7 @@ app.use(async (ctx, next) => {
 
 if (! isProduction) {
     const staticM = require('koa-static');
-    app.use(staticM(__dirname + '/static'));
+    app.use(staticM(__dirname));
 }
 
 app
