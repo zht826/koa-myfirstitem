@@ -6,6 +6,7 @@ const Koa = require('koa');
 const app = new Koa();
 const bodyParser = require('koa-bodyparser');
 const templating  = require('./utils/nunjucks.js');
+const xmlParse = require('./middleware/xmlParse')
 // 导入controller middleware:
 const controller = require('./controller');
 const isProduction = process.env.NODE_ENV === 'production';
@@ -25,8 +26,8 @@ if (! isProduction) {
     app.use(staticM(__dirname));
 }
 
-app
-    .use(bodyParser())
+app.use(xmlParse())
+.use(bodyParser())
     .use(templating('views', {
         noCache: !isProduction,
         watch: !isProduction
