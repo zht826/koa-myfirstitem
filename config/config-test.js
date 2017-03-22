@@ -1,3 +1,4 @@
+const fs = require('fs');
 var config = {
     base:{
         port:3456
@@ -13,8 +14,11 @@ var config = {
     wx: {
         token: 'weixin',
         appid: 'xxx',
-        encodingAESKey: 'xxx'
+        secret:'123',
+        encodingAESKey: 'xxx',
+        access_Token:''
     }
 };
-
+var JsonObj=JSON.parse(fs.readFileSync('./wxToken.json'));
+        console.log(JsonObj);
 module.exports = config;
