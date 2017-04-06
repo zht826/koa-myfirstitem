@@ -10,7 +10,7 @@ const xmlParse = require('./middleware/xmlParse')
 // 导入controller middleware:
 const controller = require('./controller');
 const isProduction = process.env.NODE_ENV === 'production';
-
+const config = require('./config/config');
 app.use(async (ctx, next) => {
     console.log(`Process ${ctx.request.method} ${ctx.request.url}...`);
     var
@@ -33,6 +33,6 @@ app.use(xmlParse())
         watch: !isProduction
     }))
     .use(controller());
-app.listen(3456);
-console.log('listening on port 3456');
+app.listen(config.base.port);
+console.log('listening on port '+config.base.port);
 
